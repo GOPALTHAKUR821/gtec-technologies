@@ -1,0 +1,286 @@
+}
+
+const ADMIN_USER='GOPALTHAKUR821';
+const ADMIN_PASS='GOPAL@5467';
+
+document.addEventListener('change',function(e){
+  if(e.target && e.target.name==='payment'){
+    const box=document.getElementById('upiBox');
+    if(box) box.style.display=e.target.value==='UPI'?'block':'none';
+  }
+});
+
+function getOrders(){return JSON.parse(localStorage.getItem('gtec_orders')||'[]');}
+function saveOrders(o){localStorage.setItem('gtec_orders',JSON.stringify(o));}
+
+function submitCustomerOrder(e){
+  e.preventDefault();
+  const payment=document.querySelector('input[name="payment"]:checked').value;
+  const utr=(document.getElementById('orderUtr')?.value||'').trim();
+  if(payment==='UPI' && !utr){alert('UPI payment ke liye UTR / Transaction ID enter karein.');return;}
+  const order={
+    id:'GTEC-'+Date.now(),
+    date:new Date().toLocaleString('en-IN'),
+    name:document.getElementById('orderName').value.trim(),
+    phone:document.getElementById('orderPhone').value.trim(),
+    whatsapp:document.getElementById('orderWhatsapp').value.trim(),
+    address:document.getElementById('orderAddress').value.trim(),
+    city:document.getElementById('orderCity').value.trim(),
+    pin:document.getElementById('orderPin').value.trim(),
+    products:document.getElementById('orderProducts').value.trim(),
+    qty:document.getElementById('orderQty').value,
+    installation:document.getElementById('orderInstallation').value,
+    payment,utr,status:'New'
+  };
+  const orders=getOrders(); orders.unshift(order); saveOrders(orders);
+  document.getElementById('orderSuccess').style.display='block';
+  document.getElementById('orderSuccess').textContent='Order / enquiry '+order.id+' successfully submitted. G TEC TECHNOLOGEIES will contact you on '+order.phone+'.';
+  document.getElementById('orderForm').reset();
+  document.querySelector('input[name="payment"][value="COD"]').checked=true;
+  document.getElementById('upiBox').style.display='none';
+}
+
+async function adminLogin(){
+  const u=document.getElementById('adminUser').value.trim(),p=document.getElementById('adminPass').value;
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+    const d=await r.json();if(!r.ok)throw new Error(d.error||'Login failed');
+    sessionStorage.setItem('gtec_admin_token',d.token);window.location.href='admin.html';
+  }catch(e){document.getElementById('adminError').textContent=e.message;}
+}
+function adminLogout(){sessionStorage.removeItem('gtec_admin');location.reload();}
+function renderAdmin(){
+  const orders=getOrders();
+  document.getElementById('statTotal').textContent=orders.length;
+  document.getElementById('statNew').textContent=orders.filter(x=>x.status==='New').length;
+  document.getElementById('statUpi').textContent=orders.filter(x=>x.payment==='UPI').length;
+  document.getElementById('statCod').textContent=orders.filter(x=>x.payment==='COD').length;
+  const tbody=document.getElementById('ordersTable');
+  tbody.innerHTML=orders.length?orders.map((o,i)=>`<tr>
+    <td><strong>${escapeHtml(o.id)}</strong><br>${escapeHtml(o.date)}</td>
+    <td>${escapeHtml(o.name)}<br>${escapeHtml(o.address)}, ${escapeHtml(o.city)} - ${escapeHtml(o.pin)}</td>
+    <td>${escapeHtml(o.phone)}<br>WA: ${escapeHtml(o.whatsapp||'-')}</td>
+    <td>${escapeHtml(o.products)}<br>Qty: ${escapeHtml(o.qty)} • Install: ${escapeHtml(o.installation)}<br><strong>₹${Number(o.subtotal||0).toLocaleString('en-IN')} + Delivery ₹${Number(o.deliveryCharge||0).toLocaleString('en-IN')} = ₹${Number(o.total||0).toLocaleString('en-IN')}</strong></td>
+    <td><strong>${escapeHtml(o.payment)}</strong></td>
+    <td>${escapeHtml(o.utr||'-')}</td>
+    <td><select class="status-select" onchange="changeOrderStatus(${i},this.value)">
+      ${['New','Contacted','Confirmed','Dispatched','Delivered','Cancelled'].map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}
+    </select></td>
+  </tr>`).join(''):'<tr><td colspan="7" style="text-align:center;padding:30px">No orders / enquiries yet.</td></tr>';
+}
+function changeOrderStatus(i,status){const o=getOrders();if(o[i]){o[i].status=status;saveOrders(o);renderAdmin();}}
+function clearOrders(){
+  if(confirm('All saved orders will be deleted from this browser. Continue?')){localStorage.removeItem('gtec_orders');renderAdmin();}
+}
+function exportOrders(){
+  const data=JSON.stringify(getOrders(),null,2);
+  const blob=new Blob([data],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='gtec-orders.json';a.click();URL.revokeObjectURL(a.href);
+}
+function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+const DEFAULT_PRODUCTS = [
+  {id:'cp-unc-ta21l3c-q',brand:'CP PLUS',category:'Camera',model:'CP-UNC-TA21L3C-Q',name:'2MP IP Bullet Camera',price:2850,stock:10,specs:'2MP • IR • PoE • IP67',image:''},
+  {id:'cp-unc-da41l3c-d-q',brand:'CP PLUS',category:'Camera',model:'CP-UNC-DA41L3C-D-Q',name:'4MP IP Dome Camera',price:3000,stock:10,specs:'4MP • IR • Mic • PoE',image:''},
+  {id:'cp-uvr-0801f1v-i',brand:'CP PLUS',category:'DVR',model:'CP-UVR-0801F1V-I',name:'8 Channel DVR',price:4500,stock:10,specs:'8CH • H.265 • HDMI/VGA',image:''},
+  {id:'cp-unr-108f1',brand:'CP PLUS',category:'NVR',model:'CP-UNR-108F1',name:'8 Channel NVR',price:3800,stock:10,specs:'8CH • Up to 8MP • 1 SATA',image:''},
+  {id:'cp-anw-hpu8h2-n12',brand:'CP PLUS',category:'PoE Switch',model:'CP-ANW-HPU8H2-N12',name:'8 Port PoE Switch',price:1265,stock:10,specs:'8 PoE + 2 Uplink • 120W',image:''}
+];
+let apiProductsCache=[];
+async function loadProductsFromAPI(){
+  try{
+    const r=await fetch('/api/products'); if(!r.ok) throw new Error('products');
+    const data=await r.json();
+    apiProductsCache=Array.isArray(data)?data:(Array.isArray(data.products)?data.products:[]);
+    localStorage.setItem('gtec_products',JSON.stringify(apiProductsCache));
+    if(typeof renderDynamicProducts==='function') renderDynamicProducts();
+    return apiProductsCache;
+  }catch(e){
+    try{
+      const cached=JSON.parse(localStorage.getItem('gtec_products')||'[]');
+      apiProductsCache=Array.isArray(cached)?cached:(Array.isArray(cached.products)?cached.products:[]);
+    }catch{apiProductsCache=[];}
+    if(typeof renderDynamicProducts==='function') renderDynamicProducts();
+    return apiProductsCache;
+  }
+}
+function getProducts(){
+  if(Array.isArray(apiProductsCache)&&apiProductsCache.length)return apiProductsCache;
+  try{
+    const cached=JSON.parse(localStorage.getItem('gtec_products')||'[]');
+    return Array.isArray(cached)?cached:(Array.isArray(cached.products)?cached.products:[]);
+  }catch{return [];}
+}
+function saveProducts(p){localStorage.setItem('gtec_products',JSON.stringify(p));}
+function openProductEditor(productId){
+  document.getElementById('productEditor').style.display='block';
+  document.getElementById('productEditorTitle').textContent=productId?'Edit Product':'Add Product';
+  document.getElementById('editProductId').value=productId||'';
+  const p=productId?getProducts().find(x=>x.id===productId):null;
+  document.getElementById('pBrand').value=p?.brand||'';
+  document.getElementById('pCategory').value=p?.category||'Camera';
+  document.getElementById('pModel').value=p?.model||'';
+  document.getElementById('pName').value=p?.name||'';
+  document.getElementById('pPrice').value=p?.price||'';
+  document.getElementById('pStock').value=p?.stock??0;
+  document.getElementById('pSpecs').value=p?.specs||'';
+  document.getElementById('pImage').value=p?.image||'';
+  const prev=document.getElementById('productPreview');
+  prev.src=p?.image||'';
+  prev.style.display=p?.image?'block':'none';
+  document.getElementById('productPreviewText').style.display=p?.image?'none':'block';
+}
+function closeProductEditor(){document.getElementById('productEditor').style.display='none';}
+function previewProductImage(e){
+  const file=e.target.files?.[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    document.getElementById('pImage').value=reader.result;
+    const img=document.getElementById('productPreview');img.src=reader.result;img.style.display='block';
+    document.getElementById('productPreviewText').style.display='none';
+  }; reader.readAsDataURL(file);
+}
+function saveProduct(){
+  const id=document.getElementById('editProductId').value||('prod-'+Date.now());
+  const p={
+    id,brand:document.getElementById('pBrand').value.trim(),category:document.getElementById('pCategory').value,
+    model:document.getElementById('pModel').value.trim(),name:document.getElementById('pName').value.trim(),
+    price:Number(document.getElementById('pPrice').value||0),stock:Number(document.getElementById('pStock').value||0),
+    specs:document.getElementById('pSpecs').value.trim(),image:document.getElementById('pImage').value.trim()
+  };
+  if(!p.brand||!p.model||!p.name){alert('Brand, model aur product name zaroor bharein.');return;}
+  const products=getProducts(); const idx=products.findIndex(x=>x.id===id);
+  if(idx>=0) products[idx]=p; else products.unshift(p);
+  saveProducts(products); renderProductManager(); renderDynamicProducts(); closeProductEditor(); alert('Product saved successfully.');
+}
+function deleteProduct(id){
+  const p=getProducts().find(x=>x.id===id);
+  if(confirm('Delete '+(p?.model||'this product')+'?')){saveProducts(getProducts().filter(x=>x.id!==id));renderProductManager();renderDynamicProducts();}
+}
+function renderProductManager(){
+  const tbody=document.getElementById('productManagerTable'); if(!tbody)return;
+  tbody.innerHTML=getProducts().map(p=>`<tr>
+    <td>${p.image?`<img class="product-thumb" src="${p.image}" alt="" onerror="this.style.display='none'">`:'<div class="product-thumb"></div>'}</td>
+    <td><strong>${escapeHtml(p.brand)}</strong><br>${escapeHtml(p.model)}<br><small>${escapeHtml(p.name)}</small></td>
+    <td>${escapeHtml(p.category)}</td><td>₹${Number(p.price||0).toLocaleString('en-IN')}</td><td>${p.stock}</td>
+    <td><button class="manager-action" onclick="openProductEditor('${p.id}')">Edit / Photo</button><button class="manager-action delete" onclick="deleteProduct('${p.id}')">Delete</button></td>
+  </tr>`).join('');
+}
+
+
+
+
+function getCart(){
+  try{
+    const raw=JSON.parse(localStorage.getItem('gtec_cart')||'[]');
+    return Array.isArray(raw)?raw.map(x=>({...x,price:Number(String(x.price??0).replace(/[^0-9.]/g,''))||0,qty:Math.max(1,Number(x.qty)||1)})):[]; 
+  }catch{return []}
+}
+function saveCart(c){localStorage.setItem('gtec_cart',JSON.stringify(c));updateCartBar();}
+function addProductFromButton(btn){
+  try{
+    if(!btn) throw new Error('Button missing');
+    let raw=btn.getAttribute('data-product');
+    if(raw){
+      const product=JSON.parse(raw);
+      addToCart(product);
+      return true;
+    }
+    raw=btn.getAttribute('data-product-js');
+    if(raw){
+      // HTML attributes are decoded by the browser before getAttribute().
+      const product=JSON.parse(raw);
+      addToCart(product);
+      return true;
+    }
+    throw new Error('Product data missing');
+  }catch(e){
+    console.error('Add to cart error:',e,btn);
+    alert('Product cart me add nahi ho paya. Dobara try karein.');
+    return false;
+  }
+}
+function addToCart(product){
+  const price=Number(String(product.price??0).replace(/[^0-9.]/g,''))||0;
+  const normalized={...product,price,id:String(product.id),name:String(product.name||'Product')};
+  const c=getCart(); const found=c.find(x=>String(x.id)===normalized.id);
+  if(found){found.qty++;found.price=price;} else c.push({...normalized,qty:1});
+  saveCart(c); renderCheckout();
+  alert(normalized.name+' added to cart.');
+}
+function changeCartQty(id,delta){
+  const c=getCart(); const p=c.find(x=>String(x.id)===String(id)); if(!p)return;
+  p.qty+=delta;if(p.qty<=0)c.splice(c.indexOf(p),1);saveCart(c);renderCheckout();
+}
+function removeFromCart(id){saveCart(getCart().filter(x=>String(x.id)!==String(id)));renderCheckout();}
+function cartSubtotal(){return getCart().reduce((s,x)=>s+(Number(x.price)||0)*(Number(x.qty)||0),0);}
+function estimateDelivery(pin,city){
+  pin=String(pin||'').replace(/\D/g,'').slice(0,6);city=String(city||'').toLowerCase().trim();
+  if(pin.length!==6)return null;
+  if(pin.startsWith('204')||city.includes('hathras'))return 50;
+  if(pin.startsWith('202')||pin.startsWith('281')||pin.startsWith('282')||pin.startsWith('283'))return 70;
+  if(/^(20|21|22|23|24|25|26|27|28)/.test(pin))return 90;
+  if(pin.startsWith('110')||pin.startsWith('121')||pin.startsWith('122')||pin.startsWith('201')||pin.startsWith('203'))return 120;
+  if(/^(14|16|17|18|30)/.test(pin))return 150;
+  return 200;
+}
+function getCheckoutShipping(){return estimateDelivery(document.getElementById('coPin')?.value||'',document.getElementById('coCity')?.value||'')??0;}
+function updateCheckoutTotals(){
+  const subtotal=cartSubtotal(),delivery=getCheckoutShipping(),grand=subtotal+(getCart().length?delivery:0);
+  ['checkoutProductTotal','checkoutDeliveryTotal','checkoutTotal'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='₹'+(id==='checkoutProductTotal'?subtotal:id==='checkoutDeliveryTotal'?delivery:grand).toLocaleString('en-IN')});
+  const txt=document.getElementById('deliveryChargeText');
+  if(txt)txt.textContent=document.getElementById('coPin')?.value?.length===6?'Estimated shipping from Hathras Jn: ₹'+delivery.toLocaleString('en-IN'):'Enter a valid 6-digit PIN to calculate delivery.';
+}
+function updateCartBar(){
+  const c=getCart(),count=c.reduce((s,x)=>s+x.qty,0),subtotal=cartSubtotal(),delivery=getCheckoutShipping();
+  const ids=[['cartCount',count+' item'+(count===1?'':'s')],['cartSubtotal','₹'+subtotal.toLocaleString('en-IN')],['cartDelivery','₹'+(count?delivery:0).toLocaleString('en-IN')],['cartTotal','₹'+(subtotal+(count?delivery:0)).toLocaleString('en-IN')]];
+  ids.forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.textContent=v});
+}
+function openCart(){document.getElementById('checkout').style.display='block';renderCheckout();document.getElementById('checkout').scrollIntoView({behavior:'smooth'});}
+function renderCheckout(){
+  const box=document.getElementById('checkoutItems');if(!box)return;const c=getCart();
+  box.innerHTML=c.length?c.map(x=>`<div class="cart-line"><div><strong>${escapeHtml(x.name)}</strong><small>${escapeHtml(x.id)} • ₹${Number(x.price).toLocaleString('en-IN')} each</small></div><div class="qty-controls"><button onclick="changeCartQty('${x.id}',-1)">−</button><strong>${x.qty}</strong><button onclick="changeCartQty('${x.id}',1)">+</button></div><button class="remove-cart" onclick="removeFromCart('${x.id}')">Remove</button></div>`).join(''):'<p>Your cart is empty. Add products from the catalog above.</p>';
+  updateCheckoutTotals();updateCartBar();
+}
+document.addEventListener('input',e=>{if(e.target&&(e.target.id==='coPin'||e.target.id==='coCity')){updateCheckoutTotals();updateCartBar();}});
+document.addEventListener('change',e=>{if(e.target&&e.target.name==='coPayment')document.getElementById('coUpiBox').style.display=e.target.value==='UPI'?'block':'none';});
+async function placeCartOrder(e){
+  e.preventDefault();const c=getCart();if(!c.length){alert('Cart empty hai.');return;}
+  const payment=document.querySelector('input[name="coPayment"]:checked').value,utr=(document.getElementById('coUtr')?.value||'').trim();
+  if(payment==='UPI'&&!utr){alert('UPI UTR / Transaction ID enter karein.');return;}
+  const pin=document.getElementById('coPin').value.trim(),city=document.getElementById('coCity').value.trim(),delivery=estimateDelivery(pin,city);
+  if(delivery===null){alert('Valid 6-digit PIN code enter karein.');return;}
+  const payload={name:document.getElementById('coName').value.trim(),phone:document.getElementById('coPhone').value.trim(),address:document.getElementById('coAddress').value.trim(),city,pin,installation:document.getElementById('coInstall').value,payment,utr,items:c.map(x=>({productId:x.id,name:x.name,price:Number(x.price)||0,qty:Number(x.qty)||0}))};
+  try{
+    const r=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await r.json();if(!r.ok)throw new Error(data.error||'Order failed');
+    localStorage.removeItem('gtec_cart');updateCartBar();renderCheckout();
+    document.getElementById('coSuccess').style.display='block';
+    document.getElementById('coSuccess').textContent='Order '+data.order.id+' placed successfully. Total ₹'+Number(data.order.total).toLocaleString('en-IN')+'.';
+    document.getElementById('checkoutForm').reset();document.querySelector('input[name="coPayment"][value="COD"]').checked=true;document.getElementById('coUpiBox').style.display='none';updateCheckoutTotals();
+  }catch(err){alert('Order place nahi hua: '+err.message+'. Server/backend running hai ya nahi check karein.');}
+}
+function renderDynamicProducts(){
+  const grid=document.getElementById('dynamicProductGrid');if(!grid)return;
+  const products=getProducts();
+  grid.innerHTML=products.map(p=>`<article class="brand-product" data-category="${escapeHtml(p.category)}">
+    ${p.image?`<img class="dynamic-img" src="${p.image}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none'">`:'<div class="dynamic-img"></div>'}
+    <div class="brand-logo">${escapeHtml(p.brand)}</div><span>${escapeHtml(p.category)}</span>
+    <h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.model)} • ${escapeHtml(p.specs||'')}</p>
+    <strong>₹${Number(p.price||0).toLocaleString('en-IN')}</strong>
+    <button type="button" class="add-cart-btn" data-product-js="${escapeHtml(JSON.stringify({id:p.id,name:p.name+" — "+p.model,price:p.price,image:p.image||""}))}" >Add to Cart</button>
+  </article>`).join('');
+}
+updateCartBar();
+
+// One reliable cart click handler for every product, including dynamically loaded products.
+document.addEventListener('click',(event)=>{
+  const btn=event.target.closest('.add-cart-btn');
+  if(!btn) return;
+  event.preventDefault();
+  event.stopPropagation();
+  addProductFromButton(btn);
+});
+
+document.addEventListener('DOMContentLoaded',()=>{renderDynamicProducts();renderCheckout();loadProductsFromAPI();updateCartBar();});
+
