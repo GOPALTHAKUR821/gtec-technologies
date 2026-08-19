@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const PUBLIC = path.join(__dirname, 'public');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://sflhhuedxszpfuvocssc.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmbGhodWVkXHN6cGZ1dm9jc3NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNzg0OTksImV4cCI6MjEwMjY1NDQ5OX0.D_4JW2yDlDS5-AwGXhKyU19CLjsMf-XbZu73xA0fIok';
+const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmbGhodWVkeHN6cGZ1dm9jc3NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNzg0OTksImV4cCI6MjEwMjY1NDQ5OX0.D_4JW2yDlDS5-AwGXhKyU19CLjsMf-XbZu73xA0fIok';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
 
 app.use(cors());
