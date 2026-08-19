@@ -1,13 +1,8 @@
 {
-  "version": 2,
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "server.js": {
-      "includeFiles": [
-        "public/**",
-        "gtec.sqlite",
-        "gtec.sqlite-shm",
-        "gtec.sqlite-wal"
-      ]
+      "includeFiles": "{public/**,gtec.sqlite,gtec.sqlite-shm,gtec.sqlite-wal}"
     }
   },
   "routes": [
