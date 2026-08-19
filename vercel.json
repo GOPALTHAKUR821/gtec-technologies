@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "functions": {
+    "server.js": {
+      "includeFiles": [
+        "public/**",
+        "gtec.sqlite",
+        "gtec.sqlite-shm",
+        "gtec.sqlite-wal"
+      ]
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ]
+}
