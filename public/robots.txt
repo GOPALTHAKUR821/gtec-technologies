@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin-login.html
+Disallow: /api/
+
+Sitemap: https://gtec-technologies.vercel.app/sitemap.xml
