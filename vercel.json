@@ -1,15 +1,15 @@
-```json
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/index.js"
-    },
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
     {
-      "source": "/admin.html",
-      "destination": "/api/index.js"
+      "src": "/(.*)",
+      "dest": "server.js"
     }
   ]
 }
-```
