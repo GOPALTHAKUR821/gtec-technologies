@@ -11,7 +11,7 @@ const PUBLIC = path.join(__dirname, 'public');
 // Supabase is the persistent production database. The publishable/anon key is
 // safe to use here because database access is locked down and only the RPC is exposed.
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://sflhhuedxszpfuvocssc.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmbGhodWVkeHN6cGZ1dm9jc3NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNzg0OTksImV4cCI6MjEwMjY1NDQ5OX0.D_4JW2yDlDS5-AwGXhKyU19CLjsMf-XbZu73xA0fIok';
+const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoic2ZsaGh1ZWR4c3pwZnV2b2Nzc2MiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4NzA3ODQ5OSwiZXhwIjoyMTAyNjU0NDk5fQ.D_4JW2yDlDS5-AwGXhKyU19CLjsMf-XbZu73xA0fIok';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
 
 app.use(cors());
@@ -116,8 +116,15 @@ app.get('/api/admin/tracking-stats', auth, async (req, res) => {
 });
 
 app.patch('/api/admin/orders/:id', auth, async (req, res) => {
-  try { res.json(await rpc('update_order', { token: req.adminToken, id: req.params.id, status: req.body?.status })); }
-  catch (e) { errorResponse(res, e); }
+  try {
+    res.json(await rpc('update_order', {
+      token: req.adminToken,
+      id: req.params.id,
+      status: req.body?.status,
+      ewayNumber: req.body?.ewayNumber,
+      courierCompany: req.body?.courierCompany
+    }));
+  } catch (e) { errorResponse(res, e); }
 });
 
 app.delete('/api/admin/orders', auth, async (req, res) => {
