@@ -57,9 +57,25 @@ function show(text,type='error'){
   message.className='message '+type;
 }
 
-if(sessionStorage.getItem('gtec_admin_token')){
-  location.replace('/admin.html?panel=1');
+async function checkExistingSession(){
+  const token=sessionStorage.getItem('gtec_admin_token');
+  if(!token)return;
+
+  try{
+    const response=await fetch('/api/admin/me',{
+      headers:{Authorization:'Bearer '+token}
+    });
+
+    if(response.ok){
+      location.replace('/admin.html?panel=1');
+      return;
+    }
+  }catch{}
+
+  sessionStorage.removeItem('gtec_admin_token');
 }
+
+checkExistingSession();
 
 form.addEventListener('submit',async event=>{
   event.preventDefault();
