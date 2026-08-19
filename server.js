@@ -225,4 +225,4 @@ app.delete('/api/admin/orders',auth,(req,res)=>{
 });
 
 app.get('*',(req,res)=>res.sendFile(path.join(PUBLIC,'index.html')));
-
+module.exports = app;
