@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
 const PUBLIC = path.join(ROOT, 'public');
-fs.mkdirSync(path.join(PUBLIC, 'uploads'), { recursive: true });
+
 
 app.use(cors());
 app.use(express.json({ limit: '20mb' }));
@@ -225,4 +225,4 @@ app.delete('/api/admin/orders',auth,(req,res)=>{
 });
 
 app.get('*',(req,res)=>res.sendFile(path.join(PUBLIC,'index.html')));
-app.listen(PORT,()=>console.log(`G TEC TECHNOLOGEIES running at http://localhost:${PORT}`));
+
