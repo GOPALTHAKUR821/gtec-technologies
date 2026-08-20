@@ -1,39 +1,125 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>G TEC TECHNOLOGEIES — Admin</title>
 <style>
-:root{--navy:#142b3a;--amber:#f0b52b;--bg:#eef3f6;--line:#d7e0e5;--muted:#687780;--red:#b42318;--green:#18794e}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:#172a35}.top{background:var(--navy);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px;position:sticky;top:0;z-index:10}.top strong{font-size:18px}.top small{display:block;color:#cbd8df;margin-top:4px}.actions,.tabs{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:800;cursor:pointer}.primary{background:var(--amber);color:#152c38}.dark{background:#fff;color:var(--navy)}.danger{background:#fff0f0;color:var(--red);border:1px solid #efc7c7}.wrap{max-width:1450px;margin:auto;padding:22px 16px}.tabs{margin-bottom:16px}.tab{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:9px;font-weight:800;cursor:pointer}.tab.active{background:var(--navy);color:#fff}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}.stat{background:#f7f9fa;border:1px solid var(--line);padding:15px;border-radius:11px}.stat b{display:block;font-size:25px}.stat span{font-size:11px;color:var(--muted)}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.table{width:100%;min-width:1350px;border-collapse:collapse}.table th,.table td{padding:10px;border-bottom:1px solid #e8edef;text-align:left;font-size:11px;vertical-align:top}.table th{background:#f5f7f9}.mini{padding:7px 9px;border:1px solid #d5dee4;background:#fff;border-radius:7px;font-size:10px;font-weight:800;cursor:pointer;margin:2px}.status{padding:7px;border:1px solid #d4dde3;border-radius:7px}.ship{width:170px;padding:8px;border:1px solid #d4dde3;border-radius:7px;margin-bottom:6px}.ship-label{display:block;font-weight:800;font-size:10px;margin-bottom:3px}.ship-save{background:#eaf7ee;border:1px solid #b8ddc2;color:#21643a}.login{max-width:420px;margin:80px auto;background:#fff;padding:28px;border:1px solid var(--line);border-radius:16px}.login input{width:100%;padding:12px;margin:7px 0 12px;border:1px solid var(--line);border-radius:8px}.message{padding:10px;border-radius:8px;margin-bottom:12px;font-size:11px;display:none}.ok{background:#eaf7ee;border:1px solid #b8ddc2;color:#21643a}.err{background:#fff0f0;border:1px solid #efc7c7;color:#a61b1b}.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.editor-grid label{font-size:11px;font-weight:800}.editor-grid input,.editor-grid select,.editor-grid textarea{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid #d3dde3;border-radius:8px;font:inherit}.full{grid-column:1/-1}.thumb{width:60px;height:50px;object-fit:contain;background:#eef3f6;border-radius:6px}@media(max-width:750px){.stats{grid-template-columns:repeat(2,1fr)}.editor-grid{grid-template-columns:1fr}.full{grid-column:auto}}
+:root{--navy:#142b3a;--amber:#f0b52b;--bg:#eef3f6;--line:#d7e0e5;--muted:#687780;--red:#b42318;--green:#18794e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:#172a35}
+.top{background:var(--navy);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px;position:sticky;top:0;z-index:10}.top strong{font-size:18px}.top small{display:block;color:#cbd8df;margin-top:4px}
+.actions,.tabs{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:800;cursor:pointer}.btn:disabled{opacity:.6;cursor:wait}.primary{background:var(--amber);color:#152c38}.dark{background:#fff;color:var(--navy)}.danger{background:#fff0f0;color:var(--red);border:1px solid #efc7c7}
+.wrap{max-width:1500px;margin:auto;padding:22px 16px}.tabs{margin-bottom:16px}.tab{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:9px;font-weight:800;cursor:pointer}.tab.active{background:var(--navy);color:#fff}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}.hidden{display:none!important}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}.stat{background:#f7f9fa;border:1px solid var(--line);padding:15px;border-radius:11px}.stat b{display:block;font-size:25px}.stat span{font-size:11px;color:var(--muted)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px}.table{width:100%;min-width:1550px;border-collapse:collapse}.table th,.table td{padding:10px;border-bottom:1px solid #e8edef;text-align:left;font-size:11px;vertical-align:top}.table th{background:#f5f7f9;position:sticky;top:0;z-index:1}
+.mini{padding:7px 9px;border:1px solid #d5dee4;background:#fff;border-radius:7px;font-size:10px;font-weight:800;cursor:pointer;margin:2px}.status{padding:8px;border:1px solid #d4dde3;border-radius:7px;width:155px;background:#fff}.ship{width:175px;padding:8px;border:1px solid #d4dde3;border-radius:7px;margin-bottom:6px}.ship-label{display:block;font-weight:800;font-size:10px;margin-bottom:3px}.ship-save{background:#eaf7ee;border:1px solid #b8ddc2;color:#21643a}.delete-order{background:#fff0f0;border:1px solid #efc7c7;color:#b42318}
+.login{max-width:420px;margin:80px auto;background:#fff;padding:28px;border:1px solid var(--line);border-radius:16px}.login input{width:100%;padding:12px;margin:7px 0 12px;border:1px solid var(--line);border-radius:8px}.message{padding:10px;border-radius:8px;margin-bottom:12px;font-size:11px;display:none}.ok{background:#eaf7ee;border:1px solid #b8ddc2;color:#21643a}.err{background:#fff0f0;border:1px solid #efc7c7;color:#a61b1b}
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.editor-grid label{font-size:11px;font-weight:800}.editor-grid input,.editor-grid select,.editor-grid textarea{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid #d3dde3;border-radius:8px;font:inherit}.full{grid-column:1/-1}.thumb{width:60px;height:50px;object-fit:contain;background:#eef3f6;border-radius:6px}
+.notice{font-size:11px;color:var(--muted);margin:0 0 14px}.saving{font-size:10px;color:var(--muted);display:block;margin-top:4px}
+@media(max-width:750px){.stats{grid-template-columns:repeat(2,1fr)}.editor-grid{grid-template-columns:1fr}.full{grid-column:auto}.top{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
-<div id="loginBox" class="login"><h2>G TEC Admin Login</h2><p style="font-size:12px;color:#687780">Login karke order shipping details manage karein.</p><div id="loginMsg" class="message"></div><label>Username<input id="loginUser" autocomplete="username"></label><label>Password<input id="loginPass" type="password" autocomplete="current-password"></label><button class="btn primary" style="width:100%" onclick="login()">Login</button></div>
-<div id="app" style="display:none"><header class="top"><div><strong>G TEC TECHNOLOGEIES</strong><small>Admin Control Panel • Orders • E-Way Bill • Courier</small></div><div class="actions"><button class="btn dark" onclick="loadOrders()">↻ Orders</button><button class="btn dark" onclick="loadProducts()">Products</button><button class="btn dark" onclick="location.href='track-order.html'">Customer Tracking</button><button class="btn primary" onclick="logout()">Logout</button></div></header>
-<main class="wrap"><div class="tabs"><button class="tab active" onclick="showTab('orders',this)">Orders</button><button class="tab" onclick="showTab('tracking',this)">Tracking Activity</button><button class="tab" onclick="showTab('products',this)">Products</button><button class="tab" onclick="showTab('editor',this)">+ New Product</button></div>
-<section id="ordersTab" class="panel"><h2>Orders & Shipping</h2><div class="stats"><div class="stat"><b id="totalOrders">0</b><span>Total Orders</span></div><div class="stat"><b id="newOrders">0</b><span>New</span></div><div class="stat"><b id="upiOrders">0</b><span>UPI</span></div><div class="stat"><b id="codOrders">0</b><span>COD</span></div><div class="stat"><b id="trackingChecks">0</b><span>Status Checks</span></div></div><div class="message" id="orderMsg"></div><div class="table-wrap"><table class="table"><thead><tr><th>ID / Date</th><th>Customer</th><th>Contact / Address</th><th>Products</th><th>Payment</th><th>Total</th><th>Status</th><th>E-Way Number</th><th>Courier Company</th><th>Save</th><th>Tracking</th></tr></thead><tbody id="ordersBody"></tbody></table></div></section>
-<section id="trackingTab" class="panel hidden"><h2>Customer Tracking Activity</h2><p style="font-size:11px;color:var(--muted)">Customer kis number se tracking kar raha hai aur kitni baar check hua.</p><div class="table-wrap"><table class="table" style="min-width:800px"><thead><tr><th>Phone</th><th>Total Checks</th><th>Orders Checked</th><th>Last Check</th></tr></thead><tbody id="trackingBody"></tbody></table></div></section>
-<section id="productsTab" class="panel hidden"><h2>Products</h2><div id="productMsg" class="message"></div><div class="table-wrap"><table class="table" style="min-width:900px"><thead><tr><th>Photo</th><th>Brand / Name / Model</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead><tbody id="productsBody"></tbody></table></div></section>
-<section id="editorTab" class="panel hidden"><h2 id="editorTitle">Add Product</h2><div id="editorMsg" class="message"></div><div class="editor-grid"><label>Brand<input id="pBrand"></label><label>Category<select id="pCategory"><option>Camera</option><option>DVR</option><option>NVR</option><option>PoE Switch</option><option>Router</option><option>Other</option></select></label><label>Product Name<input id="pName"></label><label>Model Number<input id="pModel"></label><label>Price ₹<input id="pPrice" type="number" min="0"></label><label>Stock<input id="pStock" type="number" min="0"></label><label class="full">Specifications<textarea id="pSpecs"></textarea></label><label class="full">Photo URL<input id="pImage"></label></div><input type="hidden" id="pId"><div style="margin-top:15px"><button class="btn primary" onclick="saveProduct()">Save Product</button><button class="btn dark" onclick="newProduct()">Clear</button></div></section>
-</main></div>
+<div id="loginBox" class="login">
+  <h2>G TEC Admin Login</h2>
+  <p style="font-size:12px;color:#687780">Login karke orders, status, E-Way number aur courier manage karein.</p>
+  <div id="loginMsg" class="message"></div>
+  <label>Username<input id="loginUser" autocomplete="username"></label>
+  <label>Password<input id="loginPass" type="password" autocomplete="current-password"></label>
+  <button id="loginBtn" class="btn primary" style="width:100%" onclick="login()">Login</button>
+</div>
+
+<div id="app" style="display:none">
+<header class="top">
+  <div><strong>G TEC TECHNOLOGEIES</strong><small>Admin Control Panel • Orders • E-Way Bill • Courier</small></div>
+  <div class="actions">
+    <button class="btn dark" onclick="loadOrders()">↻ Orders</button>
+    <button class="btn dark" onclick="loadProducts()">Products</button>
+    <button class="btn dark" onclick="location.href='track-order.html'">Customer Tracking</button>
+    <button class="btn primary" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('orders',this)">Orders</button>
+    <button class="tab" onclick="showTab('tracking',this)">Tracking Activity</button>
+    <button class="tab" onclick="showTab('products',this)">Products</button>
+    <button class="tab" onclick="showTab('editor',this)">+ New Product</button>
+  </div>
+
+  <section id="ordersTab" class="panel">
+    <h2>Orders & Shipping</h2>
+    <p class="notice">Orders Supabase database se load hote hain. Page refresh/login ke baad bhi saved orders rahenge. Editing ke waqt automatic refresh inputs ko overwrite nahi karega.</p>
+    <div class="stats">
+      <div class="stat"><b id="totalOrders">0</b><span>Total Orders</span></div>
+      <div class="stat"><b id="newOrders">0</b><span>New</span></div>
+      <div class="stat"><b id="upiOrders">0</b><span>UPI</span></div>
+      <div class="stat"><b id="codOrders">0</b><span>COD</span></div>
+      <div class="stat"><b id="trackingChecks">0</b><span>Status Checks</span></div>
+    </div>
+    <div class="message" id="orderMsg"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>ID / Date</th><th>Customer</th><th>Contact / Address</th><th>Products</th><th>Payment</th><th>Total</th>
+          <th>Status</th><th>E-Way Number</th><th>Courier Company</th><th>Update</th><th>Delete</th><th>Tracking</th>
+        </tr></thead>
+        <tbody id="ordersBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="trackingTab" class="panel hidden">
+    <h2>Customer Tracking Activity</h2>
+    <p class="notice">Customer kis number se tracking kar raha hai aur kitni baar check hua.</p>
+    <div class="table-wrap"><table class="table" style="min-width:800px"><thead><tr><th>Phone</th><th>Total Checks</th><th>Orders Checked</th><th>Last Check</th></tr></thead><tbody id="trackingBody"></tbody></table></div>
+  </section>
+
+  <section id="productsTab" class="panel hidden">
+    <h2>Products</h2><div id="productMsg" class="message"></div>
+    <div class="table-wrap"><table class="table" style="min-width:900px"><thead><tr><th>Photo</th><th>Brand / Name / Model</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead><tbody id="productsBody"></tbody></table></div>
+  </section>
+
+  <section id="editorTab" class="panel hidden">
+    <h2 id="editorTitle">Add Product</h2><div id="editorMsg" class="message"></div>
+    <div class="editor-grid">
+      <label>Brand<input id="pBrand"></label>
+      <label>Category<select id="pCategory"><option>Camera</option><option>DVR</option><option>NVR</option><option>PoE Switch</option><option>Router</option><option>Other</option></select></label>
+      <label>Product Name<input id="pName"></label><label>Model Number<input id="pModel"></label>
+      <label>Price ₹<input id="pPrice" type="number" min="0"></label><label>Stock<input id="pStock" type="number" min="0"></label>
+      <label class="full">Specifications<textarea id="pSpecs"></textarea></label><label class="full">Photo URL<input id="pImage"></label>
+    </div>
+    <input type="hidden" id="pId">
+    <div style="margin-top:15px"><button class="btn primary" onclick="saveProduct()">Save Product</button><button class="btn dark" onclick="newProduct()">Clear</button></div>
+  </section>
+</main>
+</div>
+
 <script>
-let TOKEN=sessionStorage.getItem('gtec_admin_token')||'';const $=id=>document.getElementById(id);
-function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function escAttr(v){return esc(v)}
-function msg(id,text,type='ok'){const e=$(id);e.textContent=text;e.className='message '+(type==='err'?'err':'ok');e.style.display='block'}
+let TOKEN=sessionStorage.getItem('gtec_admin_token')||'';
+const $=id=>document.getElementById(id);
+const STATUS_OPTIONS=['New','Contacted','Confirmed','Dispatched','Delivered','Cancelled'];
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function escAttr(v){return esc(v)}
+function msg(id,text,type='ok'){const e=$(id);if(!e)return;e.textContent=text;e.className='message '+(type==='err'?'err':'ok');e.style.display='block'}
 async function api(path,opts={}){opts.headers=Object.assign({'Content-Type':'application/json'},opts.headers||{});if(TOKEN)opts.headers.Authorization='Bearer '+TOKEN;const r=await fetch(path,opts);let d={};try{d=await r.json()}catch{}if(!r.ok)throw new Error(d.error||('HTTP '+r.status));return d}
 function showTab(name,btn){['orders','tracking','products','editor'].forEach(x=>$(x+'Tab').classList.toggle('hidden',x!==name));document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');if(name==='orders')loadOrders();if(name==='tracking')loadTrackingStats();if(name==='products')loadProducts()}
-async function login(){try{const d=await api('/api/login',{method:'POST',body:JSON.stringify({username:$('loginUser').value,password:$('loginPass').value})});TOKEN=d.token;sessionStorage.setItem('gtec_admin_token',TOKEN);$('loginBox').style.display='none';$('app').style.display='block';loadOrders();loadTrackingStats()}catch(e){msg('loginMsg',e.message,'err')}}
-async function boot(){if(!TOKEN){return}try{await api('/api/admin/me');$('loginBox').style.display='none';$('app').style.display='block';loadOrders();loadTrackingStats()}catch(e){sessionStorage.removeItem('gtec_admin_token');TOKEN=''}}
-function orderRow(x){return `<tr><td><b>${esc(x.id)}</b><br>${esc(x.date)}</td><td><b>${esc(x.name)}</b><br>${esc(x.city)} - ${esc(x.pin)}</td><td>${esc(x.phone)}<br>${esc(x.address)}</td><td>${esc(x.products)}<br>Qty: ${esc(x.qty)}</td><td>${esc(x.payment)}<br>UTR: ${esc(x.utr||'-')}</td><td>₹${Number(x.total||0).toLocaleString('en-IN')}</td><td><select class="status" id="status_${escAttr(x.id)}">${['New','Contacted','Confirmed','Dispatched','Delivered','Cancelled'].map(s=>`<option ${s===x.status?'selected':''}>${s}</option>`).join('')}</select></td><td><span class="ship-label">E-Way Bill</span><input class="ship" id="eway_${escAttr(x.id)}" value="${escAttr(x.ewayNumber||'')}" placeholder="E-Way number"></td><td><span class="ship-label">Courier Company</span><input class="ship" id="courier_${escAttr(x.id)}" value="${escAttr(x.courierCompany||'')}" placeholder="DTDC / Delhivery / etc."></td><td><button class="mini ship-save" onclick="saveShipping('${escAttr(x.id)}')">Save</button></td><td><b>${Number(x.trackingCheckCount||0)}</b><br><small>${x.lastTrackingCheckAt?new Date(x.lastTrackingCheckAt).toLocaleString('en-IN'):'Never'}</small></td></tr>`}
-async function loadOrders(){try{const d=await api('/api/admin/orders'),orders=d.orders||[];$('totalOrders').textContent=orders.length;$('newOrders').textContent=orders.filter(x=>x.status==='New').length;$('upiOrders').textContent=orders.filter(x=>x.payment==='UPI').length;$('codOrders').textContent=orders.filter(x=>x.payment==='COD').length;$('trackingChecks').textContent=orders.reduce((n,x)=>n+Number(x.trackingCheckCount||0),0);$('ordersBody').innerHTML=orders.length?orders.map(orderRow).join(''):'<tr><td colspan="11" style="text-align:center;padding:30px">No orders yet.</td></tr>'}catch(e){msg('orderMsg','Orders load failed: '+e.message,'err')}}
-async function saveShipping(id){try{await api('/api/admin/orders/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({status:$('status_'+id).value,ewayNumber:$('eway_'+id).value.trim(),courierCompany:$('courier_'+id).value.trim()})});msg('orderMsg','Order '+id+' updated. Customer tracking will show the E-Way number and courier.');loadOrders()}catch(e){msg('orderMsg','Save failed: '+e.message,'err')}}
+async function login(){const b=$('loginBtn');b.disabled=true;b.textContent='Logging in...';try{const d=await api('/api/login',{method:'POST',body:JSON.stringify({username:$('loginUser').value.trim(),password:$('loginPass').value})});TOKEN=d.token;sessionStorage.setItem('gtec_admin_token',TOKEN);$('loginBox').style.display='none';$('app').style.display='block';await loadOrders();await loadTrackingStats()}catch(e){msg('loginMsg',e.message,'err')}finally{b.disabled=false;b.textContent='Login'}}
+async function boot(){if(!TOKEN)return;try{await api('/api/admin/me');$('loginBox').style.display='none';$('app').style.display='block';await loadOrders();await loadTrackingStats()}catch(e){sessionStorage.removeItem('gtec_admin_token');TOKEN=''}}
+function orderRow(x){const id=String(x.id);return `<tr><td><b>${esc(x.id)}</b><br>${esc(x.date)}</td><td><b>${esc(x.name)}</b><br>${esc(x.city)} - ${esc(x.pin)}</td><td>${esc(x.phone)}<br>${esc(x.address)}</td><td>${esc(x.products)}<br>Qty: ${esc(x.qty)}</td><td>${esc(x.payment)}<br>UTR: ${esc(x.utr||'-')}</td><td>₹${Number(x.total||0).toLocaleString('en-IN')}</td><td><select class="status" id="status_${escAttr(id)}">${STATUS_OPTIONS.map(s=>`<option value="${s}" ${s===x.status?'selected':''}>${s}</option>`).join('')}</select></td><td><span class="ship-label">E-Way Bill</span><input class="ship order-input" id="eway_${escAttr(id)}" value="${escAttr(x.ewayNumber||'')}" placeholder="E-Way number"></td><td><span class="ship-label">Courier Company</span><input class="ship order-input" id="courier_${escAttr(id)}" value="${escAttr(x.courierCompany||'')}" placeholder="DTDC / Delhivery / etc."></td><td><button class="mini ship-save" id="save_${escAttr(id)}" onclick="saveOrder('${escAttr(id)}')">Save Update</button><span class="saving" id="saving_${escAttr(id)}"></span></td><td><button class="mini delete-order" onclick="deleteOrder('${escAttr(id)}')">Delete</button></td><td><b>${Number(x.trackingCheckCount||0)}</b><br><small>${x.lastTrackingCheckAt?new Date(x.lastTrackingCheckAt).toLocaleString('en-IN'):'Never'}</small></td></tr>`}
+async function loadOrders(){try{const d=await api('/api/admin/orders'),orders=d.orders||[];$('totalOrders').textContent=orders.length;$('newOrders').textContent=orders.filter(x=>x.status==='New').length;$('upiOrders').textContent=orders.filter(x=>x.payment==='UPI').length;$('codOrders').textContent=orders.filter(x=>x.payment==='COD').length;$('trackingChecks').textContent=orders.reduce((n,x)=>n+Number(x.trackingCheckCount||0),0);$('ordersBody').innerHTML=orders.length?orders.map(orderRow).join(''):'<tr><td colspan="12" style="text-align:center;padding:30px">No orders yet.</td></tr>'}catch(e){msg('orderMsg','Orders load failed: '+e.message,'err')}}
+async function saveOrder(id){const saveBtn=$('save_'+id),saving=$('saving_'+id);if(!saveBtn)return;saveBtn.disabled=true;saving.textContent='Saving...';try{const status=$('status_'+id).value;const ewayNumber=$('eway_'+id).value.trim();const courierCompany=$('courier_'+id).value.trim();await api('/api/admin/orders/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({status,ewayNumber,courierCompany})});msg('orderMsg','Order '+id+' saved. Status, E-Way number and courier updated successfully.');saving.textContent='Saved ✓';await loadOrders()}catch(e){msg('orderMsg','Save failed: '+e.message,'err');saving.textContent='Failed'}finally{saveBtn.disabled=false}}
+async function deleteOrder(id){if(!confirm('Delete order '+id+' permanently?\n\nThis cannot be undone.'))return;try{await api('/api/admin/orders',{method:'DELETE',body:JSON.stringify({ids:[id]})});msg('orderMsg','Order '+id+' deleted successfully.');await loadOrders()}catch(e){msg('orderMsg','Delete failed: '+e.message,'err')}}
 async function loadTrackingStats(){try{const d=await api('/api/admin/tracking-stats'),rows=d.byPhone||[];$('trackingChecks').textContent=rows.reduce((n,x)=>n+Number(x.totalChecks||0),0);$('trackingBody').innerHTML=rows.length?rows.map(x=>`<tr><td>${esc(x.phone)}</td><td>${x.totalChecks}</td><td>${x.ordersChecked}</td><td>${x.lastCheckedAt?new Date(x.lastCheckedAt).toLocaleString('en-IN'):'-'}</td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;padding:30px">No tracking activity.</td></tr>'}catch(e){$('trackingBody').innerHTML=`<tr><td colspan="4">${esc(e.message)}</td></tr>`}}
-async function loadProducts(){try{const d=await api('/api/admin/products'),p=d.products||[];$('productsBody').innerHTML=p.map(x=>`<tr><td>${x.image?`<img class="thumb" src="${escAttr(x.image)}">`:''}</td><td><b>${esc(x.brand)}</b><br>${esc(x.name)}<br>${esc(x.model)}</td><td>${esc(x.category)}</td><td>₹${Number(x.price||0).toLocaleString('en-IN')}</td><td>${x.stock}</td><td><button class="mini" onclick="editProduct('${escAttr(x.id)}')">Edit</button><button class="mini danger" onclick="deleteProduct('${escAttr(x.id)}')">Delete</button></td></tr>`).join('')||'<tr><td colspan="6">No products.</td></tr>'}catch(e){msg('productMsg',e.message,'err')}}
-async function editProduct(id){const d=await api('/api/admin/products'),p=(d.products||[]).find(x=>x.id===id);if(!p)return;['pBrand','pName','pModel','pPrice','pStock','pSpecs','pImage','pId'].forEach(()=>{});$('pBrand').value=p.brand;$('pCategory').value=p.category;$('pName').value=p.name;$('pModel').value=p.model;$('pPrice').value=p.price;$('pStock').value=p.stock;$('pSpecs').value=p.specs||'';$('pImage').value=p.image||'';$('pId').value=p.id;$('editorTitle').textContent='Edit Product';showTab('editor')}
+async function loadProducts(){try{const d=await api('/api/admin/products'),p=d.products||[];$('productsBody').innerHTML=p.length?p.map(x=>`<tr><td>${x.image?`<img class="thumb" src="${escAttr(x.image)}">`:''}</td><td><b>${esc(x.brand)}</b><br>${esc(x.name)}<br>${esc(x.model)}</td><td>${esc(x.category)}</td><td>₹${Number(x.price||0).toLocaleString('en-IN')}</td><td>${x.stock}</td><td><button class="mini" onclick="editProduct('${escAttr(x.id)}')">Edit</button><button class="mini danger" onclick="deleteProduct('${escAttr(x.id)}')">Delete</button></td></tr>`).join(''):'<tr><td colspan="6">No products.</td></tr>'}catch(e){msg('productMsg',e.message,'err')}}
+async function editProduct(id){try{const d=await api('/api/admin/products'),p=(d.products||[]).find(x=>x.id===id);if(!p)return;$('pBrand').value=p.brand;$('pCategory').value=p.category;$('pName').value=p.name;$('pModel').value=p.model;$('pPrice').value=p.price;$('pStock').value=p.stock;$('pSpecs').value=p.specs||'';$('pImage').value=p.image||'';$('pId').value=p.id;$('editorTitle').textContent='Edit Product';showTab('editor')}catch(e){msg('productMsg',e.message,'err')}}
 function newProduct(){$('pBrand').value='';$('pCategory').value='Camera';$('pName').value='';$('pModel').value='';$('pPrice').value='';$('pStock').value=0;$('pSpecs').value='';$('pImage').value='';$('pId').value='';$('editorTitle').textContent='Add Product';showTab('editor')}
-async function saveProduct(){const body={brand:$('pBrand').value,category:$('pCategory').value,name:$('pName').value,model:$('pModel').value,price:$('pPrice').value,stock:$('pStock').value,specs:$('pSpecs').value,image:$('pImage').value};try{const id=$('pId').value;if(id)await api('/api/admin/products/'+encodeURIComponent(id),{method:'PUT',body:JSON.stringify(body)});else await api('/api/admin/products',{method:'POST',body:JSON.stringify(body)});msg('editorMsg','Product saved.');loadProducts()}catch(e){msg('editorMsg',e.message,'err')}}
-async function deleteProduct(id){if(!confirm('Delete this product?'))return;try{await api('/api/admin/products/'+encodeURIComponent(id),{method:'DELETE'});loadProducts()}catch(e){alert(e.message)}}
+async function saveProduct(){const body={brand:$('pBrand').value,category:$('pCategory').value,name:$('pName').value,model:$('pModel').value,price:$('pPrice').value,stock:$('pStock').value,specs:$('pSpecs').value,image:$('pImage').value};try{const id=$('pId').value;if(id)await api('/api/admin/products/'+encodeURIComponent(id),{method:'PUT',body:JSON.stringify(body)});else await api('/api/admin/products',{method:'POST',body:JSON.stringify(body)});msg('editorMsg','Product saved.');await loadProducts()}catch(e){msg('editorMsg',e.message,'err')}}
+async function deleteProduct(id){if(!confirm('Delete this product?'))return;try{await api('/api/admin/products/'+encodeURIComponent(id),{method:'DELETE'});await loadProducts()}catch(e){alert(e.message)}}
 async function logout(){try{await api('/api/logout',{method:'POST'})}catch{}sessionStorage.removeItem('gtec_admin_token');TOKEN='';location.href='admin.html'}
-boot();setInterval(()=>{if(TOKEN&&document.visibilityState==='visible')loadOrders()},10000);
+setInterval(()=>{if(!TOKEN||document.visibilityState!=='visible')return;const active=document.activeElement;if(active&&active.classList&&(active.classList.contains('order-input')||active.classList.contains('status')))return;loadOrders()},15000);
+boot();
 </script>
-</body></html>
+</body>
+</html>
