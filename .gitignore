@@ -1,1 +1,8 @@
 ﻿node_modules/
+.npm-cache/
+.env
+!.env.example
+contractor-portal/local-data/
+gtec.sqlite
+gtec.sqlite-shm
+gtec.sqlite-wal

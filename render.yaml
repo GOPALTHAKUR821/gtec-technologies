@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: andehiande-contractor-portal
+    runtime: node
+    region: singapore
+    plan: free
+    branch: contractor-portal-live
+    buildCommand: npm ci --omit=dev
+    startCommand: npm run contractor:migrate && npm run contractor:storage && npm run contractor:seed && npm run start:contractor
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: CONTRACTOR_STORAGE_BUCKET
+        value: contractor-private
+      - key: INITIAL_MASTER_PASSWORD
+        sync: false
+      - key: INITIAL_MD_PASSWORD
+        sync: false
+      - key: INITIAL_MANAGER_PASSWORD
+        sync: false
+      - key: INITIAL_SUPERVISOR_PASSWORD
+        sync: false

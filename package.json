@@ -2,13 +2,29 @@
   "name": "gtec-technologies-seller",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "contractor:migrate": "node contractor-portal/migrate.js",
+    "contractor:storage": "node contractor-portal/storage.js",
+    "contractor:seed": "node contractor-portal/seed.js",
+    "start:contractor": "node contractor-portal/server.js",
+    "start:local": "pglite-server --db=./contractor-portal/local-data --host=127.0.0.1 --port=5432 --run \"node contractor-portal/start-local.js\" --include-database-url"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "multer": "^2.0.2",
+    "pg": "^8.16.3",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@electric-sql/pglite-socket": "^0.2.11"
   }
 }
